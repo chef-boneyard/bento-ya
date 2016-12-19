@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/bento-ya.svg)](http://badge.fury.io/rb/bento-ya)
+
 # bento-ya
 A RubyGem for managing chef/bento builds
 
@@ -21,11 +23,11 @@ sure to run `bundle install`.
 
 To build multiple templates for all providers (VirtualBox, Fusion, Parallels, etc):
 
-    $ bin/bento build debian-8.6-amd64 debian-8.6-i386
+    $ bento build debian-8.6-amd64 debian-8.6-i386
 
 To build a box for a single provider:
 
-    $ bin/bento build --only=virtualbox-iso debian-8.6-amd64
+    $ bento build --only=virtualbox-iso debian-8.6-amd64
 
 ## Versioning
 
