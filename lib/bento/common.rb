@@ -102,27 +102,31 @@ module Common
     }
     ver_hash.each do |tool, command|
       cmd = Mixlib::ShellOut.new(command)
-      cmd.run_command
-      case tool
-      when /parallels/
-        ver = cmd.stdout.split(' ')[2]
-        # hash = cmd.stdout.split(' ')[3]
-        # ver = "#{semver} #{hash}"
-      when /fusion/
-        ver = cmd.stderr.split(' ')[5]
-        # hash = cmd.stderr.split(' ')[6].gsub(/^build-/,'')
-        # ver = "#{semver} \(#{hash}\)"
-      when /vagrant/
-        semver = cmd.stdout.split(' ')[1]
-        ver = "#{semver}"
-      when /virtualbox/
-        ver = cmd.stdout.split('r')[0]
-        # hash = cmd.stdout.split('r')[1].gsub(/\n/,'')
-        # ver = "#{semver} \(#{hash}\)"
-      else
-        ver = cmd.stdout.split("\n")[0]
+      begin
+        cmd.run_command
+        case tool
+        when /parallels/
+          ver = cmd.stdout.split(' ')[2]
+          # hash = cmd.stdout.split(' ')[3]
+          # ver = "#{semver} #{hash}"
+        when /fusion/
+          ver = cmd.stderr.split(' ')[5]
+          # hash = cmd.stderr.split(' ')[6].gsub(/^build-/,'')
+          # ver = "#{semver} \(#{hash}\)"
+        when /vagrant/
+          semver = cmd.stdout.split(' ')[1]
+          ver = "#{semver}"
+        when /virtualbox/
+          ver = cmd.stdout.split('r')[0]
+          # hash = cmd.stdout.split('r')[1].gsub(/\n/,'')
+          # ver = "#{semver} \(#{hash}\)"
+        else
+          ver = cmd.stdout.split("\n")[0]
+        end
+        tool_versions[tool] = ver
+      rescue
+        tool_versions[tool] = 'None'
       end
-      tool_versions[tool] = ver
     end
     tool_versions
   end
