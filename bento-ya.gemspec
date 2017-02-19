@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["sthomas@chef.io"]
   gem.description   = "bento-ya builds bento boxes"
   gem.summary       = "A RubyGem for managing chef/bento builds"
-  gem.homepage      = "http://cheeseplus.github.io/bento-ya"
+  gem.homepage      = "https://github.com/cheeseplus/bento-ya"
 
   gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   gem.bindir = "bin"
