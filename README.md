@@ -21,6 +21,8 @@ sure to run `bundle install`.
 
 ### Using `bento`
 
+#### build
+
 To build multiple templates for all providers (VirtualBox, Fusion, Parallels, etc):
 
     $ bento build debian-8.6-amd64 debian-8.6-i386
@@ -28,6 +30,28 @@ To build multiple templates for all providers (VirtualBox, Fusion, Parallels, et
 To build a box for a single provider:
 
     $ bento build --only=virtualbox-iso debian-8.6-amd64
+
+
+*NOTE*: The following commands rely on the environmental variables
+`ATLAS_TOKEN` and `ATLAS_ORG` being correctly set.
+
+#### upload
+
+To upload built boxes to [Atlas][atlas].
+
+    $ bento upload
+
+#### release
+
+    $ bento release debian-8.6 2.3.3
+
+#### revoke
+
+    $ bento revoke debian-8.6 2.3.3
+
+#### delete
+
+    $ bento revoke debian-8.6 2.3.3
 
 ## Versioning
 
@@ -38,3 +62,5 @@ bento-ya aims to adhere to [Semantic Versioning 2.0.0][semver].
 Apache License, Version 2.0 (see [LICENSE][license])
 
 [license]: https://github.com/cheeseplus/bento-ya/blob/master/LICENSE
+[semver]:  http://semver.org/
+[atlas]:   https://atlas.hashicorp.com

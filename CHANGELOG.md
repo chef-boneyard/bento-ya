@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.0.3](https://github.com/cheeseplus/bento-ya/tree/v0.0.3) (2017-02-22)
+[Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v0.0.2...v0.0.3)
+
+**Improvements:**
+
+- Cleaning up code and fixing normalize [\#8](https://github.com/cheeseplus/bento-ya/pull/8) ([cheeseplus](https://github.com/cheeseplus))
+
 ## [v0.0.2](https://github.com/cheeseplus/bento-ya/tree/v0.0.2) (2017-02-18)
 [Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v0.0.1...v0.0.2)
 
@@ -8,7 +15,6 @@
 - Deal with executables missing [\#5](https://github.com/cheeseplus/bento-ya/pull/5) ([karcaw](https://github.com/karcaw))
 
 ## [v0.0.1](https://github.com/cheeseplus/bento-ya/tree/v0.0.1) (2016-12-19)
-**Merged pull requests:**
 
 - Initial release
 
