@@ -107,19 +107,12 @@ module Common
         case tool
         when /parallels/
           ver = cmd.stdout.split(' ')[2]
-          # hash = cmd.stdout.split(' ')[3]
-          # ver = "#{semver} #{hash}"
         when /fusion/
           ver = cmd.stderr.split(' ')[5]
-          # hash = cmd.stderr.split(' ')[6].gsub(/^build-/,'')
-          # ver = "#{semver} \(#{hash}\)"
         when /vagrant/
-          semver = cmd.stdout.split(' ')[1]
-          ver = "#{semver}"
+          ver = cmd.stdout.split(' ')[1]
         when /virtualbox/
           ver = cmd.stdout.split('r')[0]
-          # hash = cmd.stdout.split('r')[1].gsub(/\n/,'')
-          # ver = "#{semver} \(#{hash}\)"
         else
           ver = cmd.stdout.split("\n")[0]
         end
@@ -131,34 +124,3 @@ module Common
     tool_versions
   end
 end
-
-# module PackerExec
-
-#   def for_packer_run_with(template)
-#     Tempfile.open("#{template}-metadata.json") do |md_file|
-#       Tempfile.open("#{template}-metadata-var-file") do |var_file|
-#         write_box_metadata(template, md_file)
-#         yield md_file, var_file
-#       end
-#     end
-#   end
-
-#   def write_box_metadata(template, io)
-#     md = BuildMetadata.new(template, build_timestamp, override_version).read
-#     io.write(JSON.pretty_generate(md))
-#     io.close
-#   end
-
-#   # def write_var_file(template, md_file, io)
-#   #   md = BuildMetadata.new(template, build_timestamp, override_version).read
-
-#   #   io.write(JSON.pretty_generate({
-#   #     box_basename:     md[:box_basename],
-#   #     build_timestamp:  md[:build_timestamp],
-#   #     git_revision:     md[:git_revision],
-#   #     metadata:         md_file.path,
-#   #     version:          md[:version],
-#   #   }))
-#   #   io.close
-#   # end
-# end
