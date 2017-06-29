@@ -57,6 +57,10 @@ class Options
       options.version = ARGV[1]
     }
 
+    md_json_argv_proc = proc { |options|
+      options.md_json = ARGV[0]
+    }
+
     subcommand = {
       help: {
         parser: OptionParser.new {},
@@ -153,7 +157,7 @@ class Options
         parser: OptionParser.new { |opts|
           opts.banner = "Usage: #{NAME} upload"
         },
-        argv: box_version_argv_proc
+        argv: md_json_argv_proc
       },
       release: {
         class: ReleaseRunner,

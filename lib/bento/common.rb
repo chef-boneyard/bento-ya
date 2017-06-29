@@ -36,7 +36,7 @@ module Common
     metadata['name'] = json['name']
     metadata['version'] = json['version']
     metadata['box_basename'] = json['box_basename']
-    metadata['tool_versions'] = json['box_basename']
+    metadata['tool_versions'] = json['tool_versions']
     metadata['providers'] = Hash.new
     json['providers'].each do |provider|
       metadata['providers'][provider['name']] = provider.reject { |k, _| k == 'name' }
@@ -50,22 +50,6 @@ module Common
 
   def compute_metadata_files
     `ls builds/*.json`.split("\n")
-  end
-
-  def atlas_api
-    @atlas_api ||= 'https://atlas.hashicorp.com/api/v1'
-  end
-
-  def atlas_org
-    @atlas_org ||= ENV['ATLAS_ORG']
-  end
-
-  def atlas_token
-    @atlas_token ||= ENV['ATLAS_TOKEN']
-  end
-
-  def bento_upload
-    "1"
   end
 
   def bento_version

@@ -16,9 +16,8 @@ class TestRunner
     banner("Starting testing...")
     time = Benchmark.measure do
       metadata_files.each do |metadata_file|
-        m = box_metadata(metadata_file)
         destroy_all_bento
-        test_box(m['name'], m['providers'])
+        test_box(metadata_file)
         destroy_all_bento
       end
     end
@@ -40,32 +39,17 @@ class TestRunner
     end
   end
 
-  def test_box(boxname, providers)
-    providers.each do |provider, provider_data|
+  def test_box(md_json)
+    md = box_metadata(md_json)
+    @boxname = md['name']
+    @providers = md['providers']
+    @share_disabled = shared_folder ? false : true
 
-      if provider == 'vmware_desktop'
-        case RUBY_PLATFORM
-        when /darwin/
-          provider = 'vmware_fusion'
-        when /linux/
-          provider = 'vmware_workstation'
-        end
-      end
+    t_dir = "#{File.expand_path("../../", File.dirname(__FILE__))}/templates"
+    kitchen_cfg = ERB.new(File.read(t_dir + '/kitchen.yml.erb'), nil, '-').result(binding)
+    File.open(".kitchen.yml", "w") { |f| f.puts kitchen_cfg }
 
-      @boxname = boxname
-      @provider = provider
-      @share_disabled = shared_folder ? false : true
-      @box_url = "file://#{ENV['PWD']}/builds/#{provider_data['file']}"
-
-      kitchen_cfg = ERB.new(File.read('.kitchen.yml.erb'), nil, '-').result(binding)
-      File.open(".kitchen.#{provider}.yml", "w") { |f| f.puts kitchen_cfg }
-
-      Kitchen.logger = Kitchen.default_file_logger
-      @loader = Kitchen::Loader::YAML.new(project_config: "./.kitchen.#{provider}.yml")
-      config = Kitchen::Config.new(loader: @loader)
-      config.instances.each do |instance|
-        instance.test(:always)
-      end
-    end
+    kitchen_test = Mixlib::ShellOut.new("kitchen test", :timeout => 900, live_stream: STDOUT)
+    kitchen_test.run_command
   end
 end

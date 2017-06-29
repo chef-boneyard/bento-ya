@@ -1,0 +1,18 @@
+---
+provisioner:
+  name: <%= @provisioner %>
+
+platforms:
+<% @providers.each do |k,v| -%>
+- name: <%= @boxname + '-' + k %>
+  driver:
+    name: vagrant
+    provider: <%= k %>
+    box: bento-<%= @boxname %>
+    box_url: file://<%= ENV['PWD'] %>/builds/<%= v['file'] %>
+    synced_folders:
+      - [".", "/vagrant", "disabled: <%= @share_disabled %>"]
+
+<% end -%>
+suites:
+- name: default
