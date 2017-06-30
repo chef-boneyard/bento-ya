@@ -40,6 +40,10 @@ class BuildRemoteRunner
     "v1/organizations/#{org}"
   end
 
+  def bento_upload
+    "1"
+  end
+
   def build(platform, version, arch, provider, bento_version, dry_run)
     plat =  platform.include?('omnios') ? "#{platform}-#{version}" : "#{platform}-#{version}-#{arch}"
     atlas_name = /(.*)64/.match(arch) ? plat.chomp("-#{arch}") : plat

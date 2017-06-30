@@ -1,0 +1,26 @@
+---
+provisioner:
+  name: <%= @provisioner %>
+
+platforms:
+<% @providers.each do |k,v| -%>
+- name: <%= @boxname + '-' + k %>
+  driver:
+    name: vagrant
+<% if k == 'vmware' -%>
+<% if RUBY_PLATFORM.match(/darwin/) -%>
+    provider: <%= k + '_fusion' %>
+<% else -%>
+    provider: <%= k + '_workstation' %>
+<% end -%>
+<% else -%>
+    provider: <%= k %>
+<% end -%>
+    box: bento-<%= @boxname %>
+    box_url: file://<%= ENV['PWD'] %>/builds/<%= v['file'] %>
+    synced_folders:
+      - [".", "/vagrant", "disabled: <%= @share_disabled %>"]
+
+<% end -%>
+suites:
+- name: default
