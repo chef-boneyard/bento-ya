@@ -22,7 +22,5 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = ">= 2.3.1"
 
   gem.add_dependency 'rake', '~> 11.2'
-  gem.add_dependency 'test-kitchen', '~> 1.14'
-  gem.add_dependency 'aws-sdk', '~> 2.6'
   gem.add_dependency 'buildkit', '~> 0.4'
 end

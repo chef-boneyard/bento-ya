@@ -94,8 +94,16 @@ class Options
             options.mirror = opt
           end
 
-          opts.on("-H", "--headless", "Run providers as headless") do |opt|
-            options.headless = opt
+          opts.on("-C cpus", "--cpus CPUS", "# of CPUs per provider") do |opt|
+            options.cpus = opt
+          end
+
+          opts.on("-M MEMORY", "--memory MEMORY", "Memory (MB) per provider") do |opt|
+            options.mem = opt
+          end
+
+          opts.on("-H", "--headed", "Display provider UI windows") do |opt|
+            options.headed = opt
           end
 
           opts.on("-v VERSION", "--version VERSION", "Override the version set in the template") do |opt|

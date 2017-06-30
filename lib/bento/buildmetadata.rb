@@ -15,11 +15,11 @@ class BuildMetadata
       version:          version,
       build_timestamp:  build_timestamp,
       git_revision:     git_revision,
-      #git_status:       git_clean? ? "clean" : "dirty"
+      git_status:       git_clean? ? "clean" : "dirty",
       box_basename:     box_basename,
       template:         template_vars.fetch("template", UNKNOWN),
-      cpus:             cpus.to_s,
-      memory:           memory.to_s,
+      packer:           packer_ver,
+      vagrant:          vagrant_ver,
     }
   end
 
@@ -66,5 +66,17 @@ class BuildMetadata
     merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP").
       rpartition(".").first.concat(".#{build_timestamp}")
     end
+  end
+
+  def packer_ver
+    cmd = Mixlib::ShellOut.new("packer --version")
+    cmd.run_command
+    cmd.stdout.split("\n")[0]
+  end
+
+  def vagrant_ver
+    cmd = Mixlib::ShellOut.new("vagrant --version")
+    cmd.run_command
+    cmd.stdout.split(' ')[1]
   end
 end

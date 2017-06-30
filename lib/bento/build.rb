@@ -9,7 +9,8 @@ class BuildRunner
   include Common
   include PackerExec
 
-  attr_reader :templates, :dry_run, :debug, :builds, :except, :mirror, :headless, :override_version, :build_timestamp
+  attr_reader :templates, :dry_run, :debug, :builds, :except, :mirror, :headed,
+              :override_version, :build_timestamp, :cpus, :mem
 
   def initialize(opts)
     @templates = opts.templates
@@ -18,9 +19,11 @@ class BuildRunner
     @builds = opts.builds ||= "parallels-iso,virtualbox-iso,vmware-iso"
     @except = opts.except
     @mirror = opts.mirror
-    @headless = opts.headless
+    @headed = opts.headed ||= false
     @override_version = opts.override_version
     @build_timestamp = Time.now.gmtime.strftime("%Y%m%d%H%M%S")
+    @cpus = opts.cpus
+    @mem = opts.mem
   end
 
   def start
@@ -52,10 +55,14 @@ class BuildRunner
     cmd.insert(2, "-only=#{builds}") if builds
     cmd.insert(2, "-except=#{except}") if except
     # Build the command line in the correct order and without spaces as future input for the splat operator.
+    cmd.insert(2, "cpus=#{cpus}") if cpus
+    cmd.insert(2, "-var") if cpus
+    cmd.insert(2, "memory=#{mem}") if mem
+    cmd.insert(2, "-var") if mem
     cmd.insert(2, "mirror=#{mirror}") if mirror
     cmd.insert(2, "-var") if mirror
-    cmd.insert(2, "headless=true") if headless
-    cmd.insert(2, "-var") if headless
+    cmd.insert(2, "headless=true") unless headed
+    cmd.insert(2, "-var") unless headed
     cmd.insert(2, "-debug") if debug
     cmd.insert(0, "echo") if dry_run
     cmd
@@ -65,16 +72,12 @@ class BuildRunner
     md = BuildMetadata.new(template, build_timestamp, override_version).read
     path = File.join("#{Dir.pwd}/builds")
     filename = File.join(path, "#{md[:box_basename]}.metadata.json")
-
     md[:providers] = ProviderMetadata.new(path, md[:box_basename]).read
-    md[:tool_versions] = tool_versions
-
-    builders = builds.split(',')
-    md[:build_times] = Hash.new
-    builders.each do |b|
-      md[:build_times][b] = buildtime
+    md[:providers].each do |p|
+      p[:build_time] = buildtime
+      p[:build_cpus] = cpus unless cpus.nil?
+      p[:build_mem] = mem unless mem.nil?
     end
-    
 
     if dry_run
       banner("(Dry run) Metadata file contents would be something similar to:")
