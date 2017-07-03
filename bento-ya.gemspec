@@ -22,5 +22,6 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = ">= 2.3.1"
 
   gem.add_dependency 'rake', '~> 11.2'
+  gem.add_dependency 'mixlib-shellout', '~> 2.2'
   gem.add_dependency 'buildkit', '~> 0.4'
 end
