@@ -63,7 +63,7 @@ module VgCloud
   end
 
   def box_release_version(boxname, version)
-    case status(boxname, version)
+    case box_status(boxname, version)
     when 'unreleased'
       banner("Releasing version #{version} of box #{boxname}")
       req = request('put', "#{vgc_api}/box/#{vgc_org}/#{boxname}/version/#{version}/release", { 'access_token' => vgc_token }, { 'Content-Type' => 'application/json' })
