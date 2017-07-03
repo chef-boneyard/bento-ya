@@ -51,7 +51,7 @@ To upload built boxes to [Atlas][atlas].
 
 #### delete
 
-    $ bento revoke debian-8.6 2.3.3
+    $ bento delete debian-8.6 2.3.3
 
 ## Versioning
 
