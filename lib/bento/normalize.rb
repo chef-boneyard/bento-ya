@@ -1,5 +1,4 @@
 require 'bento/common'
-require 'mixlib/shellout'
 
 class NormalizeRunner
 

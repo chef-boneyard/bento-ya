@@ -1,11 +1,9 @@
-require 'mixlib/shellout'
 require 'bento/common'
 require 'bento/buildmetadata'
 require 'bento/providermetadata'
 require 'bento/packerexec'
 
 class BuildRunner
-
   include Common
   include PackerExec
 
