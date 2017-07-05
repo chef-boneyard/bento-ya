@@ -76,8 +76,12 @@ class BuildMetadata
   end
 
   def vagrant_ver
-    cmd = Mixlib::ShellOut.new("vagrant --version")
-    cmd.run_command
-    cmd.stdout.split(' ')[1]
+    if ENV['TRAVIS']
+      'travis'
+    else
+      cmd = Mixlib::ShellOut.new("vagrant --version")
+      cmd.run_command
+      cmd.stdout.split(' ')[1]
+    end
   end
 end
