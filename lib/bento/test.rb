@@ -1,5 +1,4 @@
 require 'bento/common'
-require 'kitchen'
 
 class TestRunner
   include Common
@@ -8,7 +7,7 @@ class TestRunner
 
   def initialize(opts)
     @debug = opts.debug
-    @shared_folder = opts.shared_folder
+    @no_shared = opts.no_shared
     @provisioner = opts.provisioner.nil? ? "shell" : opts.provisioner
   end
 
@@ -43,10 +42,10 @@ class TestRunner
     md = box_metadata(md_json)
     @boxname = md['name']
     @providers = md['providers']
-    @share_disabled = shared_folder ? false : true
+    @share_disabled = no_shared || /freebsd/.match(boxname) ? true : false
 
-    t_dir = "#{File.expand_path("../../", File.dirname(__FILE__))}/templates"
-    kitchen_cfg = ERB.new(File.read(t_dir + '/kitchen.yml.erb'), nil, '-').result(binding)
+    dir = "#{File.expand_path("../../", File.dirname(__FILE__))}/templates"
+    kitchen_cfg = ERB.new(File.read(dir + '/kitchen.yml.erb'), nil, '-').result(binding)
     File.open(".kitchen.yml", "w") { |f| f.puts kitchen_cfg }
 
     kitchen_test = Mixlib::ShellOut.new("kitchen test", :timeout => 900, live_stream: STDOUT)
