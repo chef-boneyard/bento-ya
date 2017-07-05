@@ -1,4 +1,5 @@
 require 'bento/common'
+require 'mixlib/shellout'
 
 class BuildMetadata
   include Common

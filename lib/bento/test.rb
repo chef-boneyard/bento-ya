@@ -1,9 +1,11 @@
 require 'bento/common'
+require 'mixlib/shellout'
+require 'erb'
 
 class TestRunner
   include Common
 
-  attr_reader :shared_folder, :boxname, :provider, :box_url, :share_disabled, :provisioner
+  attr_reader :shared_folder, :boxname, :provider, :box_url, :no_shared, :provisioner
 
   def initialize(opts)
     @debug = opts.debug
