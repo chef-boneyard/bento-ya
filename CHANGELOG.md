@@ -1,10 +1,18 @@
 # Change Log
 
+## [v0.1.3](https://github.com/cheeseplus/bento-ya/tree/v0.1.3) (2017-07-05)
+[Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v0.1.2...v0.1.3)
+
+**Merged pull requests:**
+
+- Fixing require and attr reader for test [\#22](https://github.com/cheeseplus/bento-ya/pull/22) ([cheeseplus](https://github.com/cheeseplus))
+
 ## [v0.1.2](https://github.com/cheeseplus/bento-ya/tree/v0.1.2) (2017-07-05)
 [Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v0.1.1...v0.1.2)
 
 **Merged pull requests:**
 
+- Release 0.1.2 [\#21](https://github.com/cheeseplus/bento-ya/pull/21) ([cheeseplus](https://github.com/cheeseplus))
 - Cleanup some requires [\#20](https://github.com/cheeseplus/bento-ya/pull/20) ([cheeseplus](https://github.com/cheeseplus))
 - Testing of shared folder now default, option inverted [\#18](https://github.com/cheeseplus/bento-ya/pull/18) ([cheeseplus](https://github.com/cheeseplus))
 - Fix typo in README.md [\#17](https://github.com/cheeseplus/bento-ya/pull/17) ([ffmike](https://github.com/ffmike))
