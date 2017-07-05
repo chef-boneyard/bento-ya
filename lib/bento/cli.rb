@@ -150,8 +150,8 @@ class Options
         parser: OptionParser.new { |opts|
           opts.banner = "Usage: #{NAME} test [options]"
 
-          opts.on("-f", "--shared-folder", "Enable shared folder") do |opt|
-            options.shared_folder = opt
+          opts.on("--no-shared-folder", "Disable shared folder testing") do |opt|
+            options.no_shared = opt
           end
 
           opts.on("-p", "--provisioner PROVISIONER", "Use a specfic provisioner") do |opt|
