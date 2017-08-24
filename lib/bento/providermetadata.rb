@@ -12,7 +12,7 @@ class ProviderMetadata
         name: provider_from_file(file),
         version: version(provider_from_file(file)),
         file: "#{File.basename(file)}",
-        checksum_type: "sha256",
+        checksum_type: 'sha256',
         checksum: shasum(file),
         size: "#{size_in_mb(file)} MB",
       }
@@ -24,7 +24,12 @@ class ProviderMetadata
   attr_reader :base
 
   def provider_from_file(file)
-    file.sub(/^.*\.([^.]+)\.box$/, '\1')
+    provider = file.sub(/^.*\.([^.]+)\.box$/, '\1')
+    if provider == 'vmware'
+      'vmware_desktop'
+    else
+      provider
+    end
   end
 
   def shasum(file)
@@ -33,14 +38,14 @@ class ProviderMetadata
 
   def size_in_mb(file)
     size = File.size(file)
-    size_mb = size /  MEGABYTE
+    size_mb = size / MEGABYTE
     size_mb.ceil.to_s
   end
 
   def version(provider)
     case provider
     when /vmware/
-      ver_fusion
+      ver_vmware
     when /virtualbox/
       ver_vbox
     when /parallels/
@@ -48,12 +53,18 @@ class ProviderMetadata
     end
   end
 
-  def ver_fusion
-    path = File.join('/Applications/VMware\ Fusion.app/Contents/Library')
-    fusion_cmd = File.join(path, "vmware-vmx -v")
-    cmd = Mixlib::ShellOut.new(fusion_cmd)
-    cmd.run_command
-    cmd.stderr.split(' ')[5]
+  def ver_vmware
+    if RUBY_PLATFORM.match(/darwin/)
+      path = File.join('/Applications/VMware\ Fusion.app/Contents/Library')
+      fusion_cmd = File.join(path, "vmware-vmx -v")
+      cmd = Mixlib::ShellOut.new(fusion_cmd)
+      cmd.run_command
+      cmd.stderr.split(' ')[5]
+    else
+      cmd = Mixlib::ShellOut.new("vmware --version")
+      cmd.run_command
+      cmd.stdout.split(' ')[2]
+    end
   end
 
   def ver_parallels
