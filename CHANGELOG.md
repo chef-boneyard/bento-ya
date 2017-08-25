@@ -1,5 +1,20 @@
 # Change Log
 
+## UNRELEASED
+
+### IMPROVEMENTS:
+
+* Use `vagrant_cloud` gem
+* Refactor all Vagrant Cloud related code
+* cleanup deps
+* drop remote build support
+* add Chefstyle
+* configure TravisCI
+
+### BUG FIXES:
+
+* Fix provider being set incorrectly for VMware builds
+
 ## [v0.1.4](https://github.com/cheeseplus/bento-ya/tree/v0.1.4) (2017-07-05)
 [Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v0.1.3...v0.1.4)
 

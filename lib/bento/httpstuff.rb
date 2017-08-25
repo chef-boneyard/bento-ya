@@ -1,4 +1,4 @@
-require 'net/http'
+require "net/http"
 
 module HttpStuff
 
@@ -7,8 +7,8 @@ module HttpStuff
   end
 
   def build_uri(verb, path, params = {})
-    if %w(delete, get).include?(verb)
-      path = [path, to_query_string(params)].compact.join('?')
+    if %w{delete, get}.include?(verb)
+      path = [path, to_query_string(params)].compact.join("?")
     end
 
     # Parse the URI
@@ -24,7 +24,7 @@ module HttpStuff
   def to_query_string(hash)
     hash.map do |key, value|
       "#{CGI.escape(key)}=#{CGI.escape(value)}"
-    end.join('&')[/.+/]
+    end.join("&")[/.+/]
   end
 
   def request(verb, url, data = {}, headers = {})
@@ -32,7 +32,7 @@ module HttpStuff
 
     # Build the request.
     request = class_for_request(verb).new(uri.request_uri)
-    if %w(patch post put delete).include?(verb)
+    if %w{patch post put delete}.include?(verb)
       if data.respond_to?(:read)
         request.content_length = data.size
         request.body_stream = data
@@ -50,8 +50,8 @@ module HttpStuff
 
     connection = Net::HTTP.new(uri.host, uri.port)
 
-    if uri.scheme == 'https'
-      require 'net/https' unless defined?(Net::HTTPS)
+    if uri.scheme == "https"
+      require "net/https" unless defined?(Net::HTTPS)
 
       # Turn on SSL
       connection.use_ssl = true
@@ -63,7 +63,7 @@ module HttpStuff
 
       case response
       when Net::HTTPRedirection
-        redirect = URI.parse(response['location'])
+        redirect = URI.parse(response["location"])
         request(verb, redirect, data, headers)
       else
         response

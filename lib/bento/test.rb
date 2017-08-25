@@ -1,6 +1,6 @@
-require 'bento/common'
-require 'mixlib/shellout'
-require 'erb'
+require "bento/common"
+require "mixlib/shellout"
+require "erb"
 
 class TestRunner
   include Common
@@ -33,7 +33,7 @@ class TestRunner
     boxes = cmd.stdout.split("\n")
 
     boxes.each do |box|
-      b = box.split(' ')
+      b = box.split(" ")
       rm_cmd = Mixlib::ShellOut.new("vagrant box remove --force #{b[0]} --provider #{b[1].to_s.gsub(/(,|\()/, '')}")
       banner("Removing #{b[0]} for provider #{b[1].to_s.gsub(/(,|\()/, '')}")
       rm_cmd.run_command
@@ -42,12 +42,12 @@ class TestRunner
 
   def test_box(md_json)
     md = box_metadata(md_json)
-    @boxname = md['name']
-    @providers = md['providers']
+    @boxname = md["name"]
+    @providers = md["providers"]
     @share_disabled = no_shared || /freebsd/.match(boxname) ? true : false
 
     dir = "#{File.expand_path("../../", File.dirname(__FILE__))}/templates"
-    kitchen_cfg = ERB.new(File.read(dir + '/kitchen.yml.erb'), nil, '-').result(binding)
+    kitchen_cfg = ERB.new(File.read(dir + "/kitchen.yml.erb"), nil, "-").result(binding)
     File.open(".kitchen.yml", "w") { |f| f.puts kitchen_cfg }
 
     kitchen_test = Mixlib::ShellOut.new("kitchen test", :timeout => 900, live_stream: STDOUT)

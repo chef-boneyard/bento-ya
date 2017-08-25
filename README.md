@@ -1,4 +1,4 @@
-[![Gem Version](https://badge.fury.io/rb/bento-ya.svg)](http://badge.fury.io/rb/bento-ya)
+[![Gem Version](https://badge.fury.io/rb/bento-ya.svg)](http://badge.fury.io/rb/bento-ya) [![Build Status Master](https://travis-ci.org/cheeseplus/bento-ya.svg?branch=master)](https://travis-ci.org/cheeseplus/bento-ya)
 
 # bento-ya
 A RubyGem for managing chef/bento builds

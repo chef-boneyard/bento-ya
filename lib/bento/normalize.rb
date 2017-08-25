@@ -1,4 +1,4 @@
-require 'bento/common'
+require "bento/common"
 
 class NormalizeRunner
 
@@ -25,7 +25,7 @@ class NormalizeRunner
     if !@modified.empty?
       info("")
       info("The following templates were modified:")
-      @modified.sort.each { |template| info("  * #{template}")}
+      @modified.sort.each { |template| info("  * #{template}") }
     end
     banner("Normalizing finished in #{duration(time.real)}.")
   end
@@ -41,7 +41,7 @@ class NormalizeRunner
 
     banner("[#{template}] Fixing")
     original_checksum = checksum(file)
-    output = %x{packer fix #{file}}
+    output = `packer fix #{file}`
     raise "[#{template}] Error fixing, exited #{$?}" if $?.exitstatus != 0
     # preserve ampersands in shell commands,
     # see: https://github.com/mitchellh/packer/issues/784
@@ -59,7 +59,7 @@ class NormalizeRunner
 
   def packer_validate_cmd(template, var_file)
     vars = "#{template}.variables.json"
-    cmd = %W[packer validate -var-file=#{var_file} #{template}.json]
+    cmd = %W{packer validate -var-file=#{var_file} #{template}.json}
     cmd.insert(2, "-var-file=#{vars}") if File.exist?(vars)
     cmd
   end
@@ -74,7 +74,7 @@ class NormalizeRunner
         banner("[#{template}] DEBUG: md_file(#{md_file.path}) is:")
         puts IO.read(md_file.path)
       end
-      system(*cmd) or raise "[#{template}] Error validating, exited #{$?}"
+      system(*cmd) || raise( "[#{template}] Error validating, exited #{$?}")
     end
   end
 end
