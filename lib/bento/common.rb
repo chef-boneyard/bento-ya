@@ -9,7 +9,7 @@ MEGABYTE = 1024.0 * 1024.0
 
 module Common
   def vc_account
-    VagrantCloud::Account.new(ENV["ATLAS_ORG"], ENV["ATLAS_TOKEN"])
+    VagrantCloud::Account.new(ENV["VAGRANT_CLOUD_ORG"], ENV["VAGRANT_CLOUD_TOKEN"])
   end
 
   def banner(msg)
