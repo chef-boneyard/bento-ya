@@ -6,7 +6,7 @@ Signal.trap("INT") { exit 1 }
 $stdout.sync = true
 $stderr.sync = true
 
-$LOAD_PATH.unshift File.join(File.dirname(__FILE__), %w[.. lib])
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), %w{.. lib})
 require "bento/cli"
 
 begin

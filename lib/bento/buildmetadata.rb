@@ -1,5 +1,5 @@
-require 'bento/common'
-require 'mixlib/shellout'
+require "bento/common"
+require "mixlib/shellout"
 
 class BuildMetadata
   include Common
@@ -35,11 +35,11 @@ class BuildMetadata
   end
 
   def git_revision
-    sha = %x{git rev-parse HEAD}.strip
+    sha = `git rev-parse HEAD`.strip
   end
 
   def git_clean?
-    %x{git status --porcelain}.strip.empty?
+    `git status --porcelain`.strip.empty?
   end
 
   def merged_vars
@@ -62,10 +62,10 @@ class BuildMetadata
 
   def version
     if override_version
-       override_version
+      override_version
     else
-    merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP").
-      rpartition(".").first.concat(".#{build_timestamp}")
+      merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP").
+        rpartition(".").first.concat(".#{build_timestamp}")
     end
   end
 
@@ -76,12 +76,12 @@ class BuildMetadata
   end
 
   def vagrant_ver
-    if ENV['TRAVIS']
-      'travis'
+    if ENV["TRAVIS"]
+      "travis"
     else
       cmd = Mixlib::ShellOut.new("vagrant --version")
       cmd.run_command
-      cmd.stdout.split(' ')[1]
+      cmd.stdout.split(" ")[1]
     end
   end
 end

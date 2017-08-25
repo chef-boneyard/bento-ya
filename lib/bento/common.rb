@@ -1,12 +1,16 @@
-require 'benchmark'
-require 'fileutils'
-require 'json'
-require 'tempfile'
-require 'yaml'
+require "benchmark"
+require "fileutils"
+require "json"
+require "tempfile"
+require "yaml"
+require "vagrant_cloud"
 
 MEGABYTE = 1024.0 * 1024.0
 
 module Common
+  def vc_account
+    VagrantCloud::Account.new(ENV["ATLAS_ORG"], ENV["ATLAS_TOKEN"])
+  end
 
   def banner(msg)
     puts "==> #{msg}"
@@ -33,13 +37,13 @@ module Common
     json = JSON.parse(file)
 
     # metadata needed for upload:  boxname, version, provider, box filename
-    metadata['name'] = json['name']
-    metadata['version'] = json['version']
-    metadata['box_basename'] = json['box_basename']
-    metadata['tools'] = json['tools']
-    metadata['providers'] = Hash.new
-    json['providers'].each do |provider|
-      metadata['providers'][provider['name']] = provider.reject { |k, _| k == 'name' }
+    metadata["name"] = json["name"]
+    metadata["version"] = json["version"]
+    metadata["box_basename"] = json["box_basename"]
+    metadata["tools"] = json["tools"]
+    metadata["providers"] = Hash.new
+    json["providers"].each do |provider|
+      metadata["providers"][provider["name"]] = provider.reject { |k, _| k == "name" }
     end
     metadata
   end
@@ -52,16 +56,24 @@ module Common
     `ls builds/*.json`.split("\n")
   end
 
-  def bento_version
-    @bento_version ||= ENV['BENTO_VERSION']
-  end
-
   def builds
     YAML.load(File.read("builds.yml"))
   end
 
   def private_box?(boxname)
-    proprietary_os_list = %w(macosx sles solaris windows)
+    proprietary_os_list = %w{macosx sles solaris windows}
     proprietary_os_list.any? { |p| boxname.include?(p) }
+  end
+
+  def os_x?
+    !!(RUBY_PLATFORM =~ /darwin/)
+  end
+
+  def unix?
+    !windows?
+  end
+
+  def windows?
+    !!(RUBY_PLATFORM =~ /mswin|mingw|windows/)
   end
 end

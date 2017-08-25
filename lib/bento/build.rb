@@ -1,7 +1,7 @@
-require 'bento/common'
-require 'bento/buildmetadata'
-require 'bento/providermetadata'
-require 'bento/packerexec'
+require "bento/common"
+require "bento/buildmetadata"
+require "bento/providermetadata"
+require "bento/packerexec"
 
 class BuildRunner
   include Common
@@ -39,7 +39,7 @@ class BuildRunner
       cmd = packer_build_cmd(template, md_file.path)
       banner("[#{template}] Building: '#{cmd.join(' ')}'")
       time = Benchmark.measure do
-        system(*cmd) or raise "[#{template}] Error building, exited #{$?}"
+        system(*cmd) || raise( "[#{template}] Error building, exited #{$?}")
       end
       write_final_metadata(template, time.real.ceil)
       banner("[#{template}] Finished building in #{duration(time.real)}.")
@@ -48,7 +48,7 @@ class BuildRunner
 
   def packer_build_cmd(template, var_file)
     vars = "#{template}.variables.json"
-    cmd = %W[packer build -var-file=#{var_file} #{template}.json]
+    cmd = %W{packer build -var-file=#{var_file} #{template}.json}
     cmd.insert(2, "-var-file=#{vars}") if File.exist?(vars)
     cmd.insert(2, "-only=#{builds}") if builds
     cmd.insert(2, "-except=#{except}") if except

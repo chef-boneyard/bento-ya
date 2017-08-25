@@ -1,19 +1,16 @@
-require 'optparse'
-require 'ostruct'
+require "optparse"
+require "ostruct"
 
-require 'bento/common'
-require 'bento/build'
-require 'bento/build_remote'
-require 'bento/delete'
-require 'bento/normalize'
-require 'bento/release'
-require 'bento/revoke'
-require 'bento/test'
-require 'bento/upload'
-
+require "bento/common"
+require "bento/build"
+require "bento/delete"
+require "bento/normalize"
+require "bento/release"
+require "bento/revoke"
+require "bento/test"
+require "bento/upload"
 
 class Options
-
   NAME = File.basename($0).freeze
 
   def self.parse(args)
@@ -38,7 +35,7 @@ class Options
     end
 
     platforms_argv_proc = proc { |options|
-      options.platforms = builds['public'] unless args.empty?
+      options.platforms = builds["public"] unless args.empty?
     }
 
     templates_argv_proc = proc { |options|
@@ -67,11 +64,11 @@ class Options
         argv: proc { |options|
           puts global
           exit(0)
-        }
+        },
       },
       build: {
         class: BuildRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} build [options] TEMPLATE[ TEMPLATE ...]"
 
           opts.on("-n", "--dry-run", "Dry run (what would happen)") do |opt|
@@ -109,45 +106,30 @@ class Options
           opts.on("-v VERSION", "--version VERSION", "Override the version set in the template") do |opt|
             options.override_version = opt
           end
-        },
-        argv: templates_argv_proc
-      },
-      build_remote: {
-        class: BuildRemoteRunner,
-        parser: OptionParser.new { |opts|
-          opts.banner = "Usage: #{NAME} build_remote [options] [PLATFORM ...]"
-
-          opts.on("-v VERSION", "--version VERSION", "Override the version set in the template") do |opt|
-            options.override_version = opt
-          end
-
-          opts.on("--dry-run", "Show me what you got") do |opt|
-            options.dry_run = opt
-          end
-        },
-        argv: platforms_argv_proc
+        end,
+        argv: templates_argv_proc,
       },
       list: {
         class: ListRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} list [TEMPLATE ...]"
-        },
-        argv: templates_argv_proc
+        end,
+        argv: templates_argv_proc,
       },
       normalize: {
         class: NormalizeRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} normalize TEMPLATE[ TEMPLATE ...]"
 
           opts.on("-d", "--[no-]debug", "Run packer with debug output") do |opt|
             options.debug = opt
           end
-        },
-        argv: templates_argv_proc
+        end,
+        argv: templates_argv_proc,
       },
       test: {
         class: TestRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} test [options]"
 
           opts.on("--no-shared-folder", "Disable shared folder testing") do |opt|
@@ -157,37 +139,37 @@ class Options
           opts.on("-p", "--provisioner PROVISIONER", "Use a specfic provisioner") do |opt|
             options.provisioner = opt
           end
-        },
-        argv: Proc.new {}
+        end,
+        argv: Proc.new {},
       },
       upload: {
         class: UploadRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} upload"
-        },
-        argv: md_json_argv_proc
+        end,
+        argv: md_json_argv_proc,
       },
       release: {
         class: ReleaseRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} release BOX VERSION"
-        },
-        argv: box_version_argv_proc
+        end,
+        argv: box_version_argv_proc,
       },
       revoke: {
         class: RevokeRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} revoke BOX VERSION"
-        },
-        argv: box_version_argv_proc
+        end,
+        argv: box_version_argv_proc,
       },
       delete: {
         class: DeleteRunner,
-        parser: OptionParser.new { |opts|
+        parser: OptionParser.new do |opts|
           opts.banner = "Usage: #{NAME} delete BOX VERSION"
-        },
-        argv: box_version_argv_proc
-      }
+        end,
+        argv: box_version_argv_proc,
+      },
     }
 
     global.order!
@@ -207,12 +189,11 @@ class Options
       flatten.
       sort.
       delete_if { |file| file =~ /\.variables\./ }.
-      map { |template| template.sub(/\.json$/, '') }
+      map { |template| template.sub(/\.json$/, "") }
   end
 end
 
 class ListRunner
-
   include Common
 
   attr_reader :templates
@@ -227,7 +208,6 @@ class ListRunner
 end
 
 class Runner
-
   attr_reader :options
 
   def initialize(options)

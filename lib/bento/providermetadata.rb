@@ -1,4 +1,4 @@
-require 'digest'
+require "digest"
 
 class ProviderMetadata
 
@@ -12,7 +12,7 @@ class ProviderMetadata
         name: provider_from_file(file),
         version: version(provider_from_file(file)),
         file: "#{File.basename(file)}",
-        checksum_type: 'sha256',
+        checksum_type: "sha256",
         checksum: shasum(file),
         size: "#{size_in_mb(file)} MB",
       }
@@ -25,8 +25,8 @@ class ProviderMetadata
 
   def provider_from_file(file)
     provider = file.sub(/^.*\.([^.]+)\.box$/, '\1')
-    if provider == 'vmware'
-      'vmware_desktop'
+    if provider == "vmware"
+      "vmware_desktop"
     else
       provider
     end
@@ -54,28 +54,32 @@ class ProviderMetadata
   end
 
   def ver_vmware
-    if RUBY_PLATFORM.match(/darwin/)
+    if os_x?
       path = File.join('/Applications/VMware\ Fusion.app/Contents/Library')
       fusion_cmd = File.join(path, "vmware-vmx -v")
       cmd = Mixlib::ShellOut.new(fusion_cmd)
       cmd.run_command
-      cmd.stderr.split(' ')[5]
+      cmd.stderr.split(" ")[5]
     else
       cmd = Mixlib::ShellOut.new("vmware --version")
       cmd.run_command
-      cmd.stdout.split(' ')[2]
+      cmd.stdout.split(" ")[2]
     end
   end
 
   def ver_parallels
-    cmd = Mixlib::ShellOut.new("prlctl --version")
-    cmd.run_command
-    cmd.stdout.split(' ')[2]
+    if os_x?
+      cmd = Mixlib::ShellOut.new("prlctl --version")
+      cmd.run_command
+      cmd.stdout.split(" ")[2]
+    else
+      raise "Platform is not macOS / OS X, exiting..."
+    end
   end
 
   def ver_vbox
     cmd = Mixlib::ShellOut.new("VBoxManage --version")
     cmd.run_command
-    cmd.stdout.split('r')[0]
+    cmd.stdout.split("r")[0]
   end
 end
