@@ -44,13 +44,17 @@ class TestRunner
     md = box_metadata(md_json)
     @boxname = md["name"]
     @providers = md["providers"]
-    @share_disabled = no_shared || /freebsd/.match(boxname) ? true : false
+    @share_disabled = no_shared || /(freebsd|opensuse)/.match(boxname) ? true : false
 
     dir = "#{File.expand_path("../../", File.dirname(__FILE__))}/templates"
-    kitchen_cfg = ERB.new(File.read(dir + "/kitchen.yml.erb"), nil, "-").result(binding)
-    File.open(".kitchen.yml", "w") { |f| f.puts kitchen_cfg }
+    %w(.kitchen.yml bootstrap.sh).each do |file|
+      t = file =~ /kitchen/  ? "kitchen.yml.erb" : "#{file}.erb"
+      erb = ERB.new(File.read(dir + "/#{t}"), nil, "-").result(binding)
+      File.open(file, "w") { |f| f.puts erb }
+    end
 
-    kitchen_test = Mixlib::ShellOut.new("kitchen test", :timeout => 900, live_stream: STDOUT)
-    kitchen_test.run_command
+    test = Mixlib::ShellOut.new("kitchen test", :timeout => 900, live_stream: STDOUT)
+    test.run_command
+    test.error!
   end
 end

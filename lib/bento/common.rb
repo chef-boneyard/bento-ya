@@ -56,12 +56,38 @@ module Common
     `ls builds/*.json`.split("\n")
   end
 
-  def builds
+  def builds_yml
     YAML.load(File.read("builds.yml"))
   end
 
+  def build_list
+    bit32 = []
+    bit64 = []
+    builds_yml['public'].each do |platform, versions|
+      versions.each do |version, archs|
+        archs.each do |arch|
+          folder = case platform
+                   when 'opensuse-leap'
+                     'opensuse'
+                   when 'oracle'
+                     'oraclelinux'
+                   else
+                     platform
+                   end
+          case arch
+          when "i386"
+            bit32 << "#{folder}/#{platform}-#{version}-#{arch}"
+          else
+            bit64 << "#{folder}/#{platform}-#{version}-#{arch}"
+          end
+        end
+      end
+    end
+    bit64 + bit32
+  end
+
   def private_box?(boxname)
-    proprietary_os_list = %w{macosx sles solaris windows}
+    proprietary_os_list = %w(macos windows sles solaris rhel)
     proprietary_os_list.any? { |p| boxname.include?(p) }
   end
 

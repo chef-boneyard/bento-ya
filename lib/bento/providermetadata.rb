@@ -1,6 +1,8 @@
 require "digest"
+require "bento/common"
 
 class ProviderMetadata
+  include Common
 
   def initialize(path, box_basename)
     @base = File.join(path, box_basename)
@@ -68,13 +70,10 @@ class ProviderMetadata
   end
 
   def ver_parallels
-    if os_x?
-      cmd = Mixlib::ShellOut.new("prlctl --version")
-      cmd.run_command
-      cmd.stdout.split(" ")[2]
-    else
-      raise "Platform is not macOS / OS X, exiting..."
-    end
+    raise "Platform is not macOS / OS X, exiting..." unless os_x?
+    cmd = Mixlib::ShellOut.new("prlctl --version")
+    cmd.run_command
+    cmd.stdout.split(" ")[2]
   end
 
   def ver_vbox

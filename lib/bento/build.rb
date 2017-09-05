@@ -7,14 +7,15 @@ class BuildRunner
   include Common
   include PackerExec
 
-  attr_reader :templates, :dry_run, :debug, :builds, :except, :mirror, :headed,
+  attr_reader :template_files, :config, :dry_run, :debug, :only, :except, :mirror, :headed,
               :override_version, :build_timestamp, :cpus, :mem
 
   def initialize(opts)
-    @templates = opts.templates
+    @template_files = opts.template_files
+    @config = opts.config ||= false
     @dry_run = opts.dry_run
     @debug = opts.debug
-    @builds = opts.builds ||= "parallels-iso,virtualbox-iso,vmware-iso"
+    @only = opts.only ||= "parallels-iso,virtualbox-iso,vmware-iso"
     @except = opts.except
     @mirror = opts.mirror
     @headed = opts.headed ||= false
@@ -25,7 +26,9 @@ class BuildRunner
   end
 
   def start
-    banner("Starting build for templates: #{templates}")
+    templates = config ? build_list : template_files
+    banner("Starting build for templates:")
+    templates.each { |t| puts "- #{t}" }
     time = Benchmark.measure do
       templates.each { |template| build(template) }
     end
@@ -34,23 +37,26 @@ class BuildRunner
 
   private
 
-  def build(template)
+  def build(file)
+    dir, template = file.split('/')[0], file.split('/')[1]
+    Dir.chdir dir
     for_packer_run_with(template) do |md_file, var_file|
       cmd = packer_build_cmd(template, md_file.path)
       banner("[#{template}] Building: '#{cmd.join(' ')}'")
       time = Benchmark.measure do
-        system(*cmd) || raise( "[#{template}] Error building, exited #{$?}")
+        system(*cmd) || raise("[#{template}] Error building, exited #{$?}")
       end
       write_final_metadata(template, time.real.ceil)
       banner("[#{template}] Finished building in #{duration(time.real)}.")
     end
+    Dir.chdir("..")
   end
 
   def packer_build_cmd(template, var_file)
     vars = "#{template}.variables.json"
     cmd = %W{packer build -var-file=#{var_file} #{template}.json}
     cmd.insert(2, "-var-file=#{vars}") if File.exist?(vars)
-    cmd.insert(2, "-only=#{builds}") if builds
+    cmd.insert(2, "-only=#{only}")
     cmd.insert(2, "-except=#{except}") if except
     # Build the command line in the correct order and without spaces as future input for the splat operator.
     cmd.insert(2, "cpus=#{cpus}") if cpus
@@ -68,7 +74,7 @@ class BuildRunner
 
   def write_final_metadata(template, buildtime)
     md = BuildMetadata.new(template, build_timestamp, override_version).read
-    path = File.join("#{Dir.pwd}/builds")
+    path = File.join("../builds")
     filename = File.join(path, "#{md[:box_basename]}.metadata.json")
     md[:providers] = ProviderMetadata.new(path, md[:box_basename]).read
     md[:providers].each do |p|

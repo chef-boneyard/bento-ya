@@ -1,7 +1,6 @@
 require "bento/common"
 
 class NormalizeRunner
-
   include Common
   include PackerExec
 
