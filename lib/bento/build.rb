@@ -38,7 +38,7 @@ class BuildRunner
   private
 
   def build(file)
-    dir, template = file.split('/')[0], file.split('/')[1]
+    dir, template = file.split("/")[0], file.split("/")[1]
     Dir.chdir dir
     for_packer_run_with(template) do |md_file, var_file|
       cmd = packer_build_cmd(template, md_file.path)

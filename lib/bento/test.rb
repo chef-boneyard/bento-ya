@@ -47,8 +47,8 @@ class TestRunner
     @share_disabled = no_shared || /(freebsd|opensuse)/.match(boxname) ? true : false
 
     dir = "#{File.expand_path("../../", File.dirname(__FILE__))}/templates"
-    %w(.kitchen.yml bootstrap.sh).each do |file|
-      t = file =~ /kitchen/  ? "kitchen.yml.erb" : "#{file}.erb"
+    %w{.kitchen.yml bootstrap.sh}.each do |file|
+      t = file =~ /kitchen/ ? "kitchen.yml.erb" : "#{file}.erb"
       erb = ERB.new(File.read(dir + "/#{t}"), nil, "-").result(binding)
       File.open(file, "w") { |f| f.puts erb }
     end
