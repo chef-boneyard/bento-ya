@@ -1,6 +1,5 @@
 
 module PackerExec
-
   def for_packer_run_with(template)
     Tempfile.open("#{template}-metadata.json") do |md_file|
       Tempfile.open("#{template}-metadata-var-file") do |var_file|

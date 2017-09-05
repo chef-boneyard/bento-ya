@@ -15,14 +15,13 @@ class Options
 
   def self.parse(args)
     options = OpenStruct.new
-    options.templates = calculate_templates("*.json")
+    options.template_files = calculate_templates("**/*.json")
 
     global = OptionParser.new do |opts|
       opts.banner = "Usage: #{NAME} [SUBCOMMAND [options]]"
       opts.separator ""
       opts.separator <<-COMMANDS.gsub(/^ {8}/, "")
         build        :   build one or more templates
-        build_remote :   build one or more templates via buildkite
         help         :   prints this help message
         list         :   list all templates in project
         normalize    :   normalize one or more templates
@@ -41,7 +40,7 @@ class Options
     templates_argv_proc = proc { |options|
       options.templates = calculate_templates(args) unless args.empty?
 
-      options.templates.each do |t|
+      options.template_files.each do |t|
         if !File.exists?("#{t}.json")
           $stderr.puts "File #{t}.json does not exist for template '#{t}'"
           exit(1)
@@ -75,12 +74,16 @@ class Options
             options.dry_run = opt
           end
 
+          opts.on("-c BUILD_YML", "--config BUILD_YML", "Use a configuration file") do |opt|
+            options.config = opt
+          end
+
           opts.on("-d", "--[no-]debug", "Run packer with debug output") do |opt|
             options.debug = opt
           end
 
           opts.on("-o BUILDS", "--only BUILDS", "Only build some Packer builds") do |opt|
-            options.builds = opt
+            options.only = opt
           end
 
           opts.on("-e BUILDS", "--except BUILDS", "Build all Packer builds except these") do |opt|
@@ -188,7 +191,7 @@ class Options
       map { |glob| result = Dir.glob(glob); result.empty? ? glob : result }.
       flatten.
       sort.
-      delete_if { |file| file =~ /\.variables\./ }.
+      delete_if { |file| file =~ /\.(variables||metadata)\./ }.
       map { |template| template.sub(/\.json$/, "") }
   end
 end
