@@ -7,18 +7,21 @@ class NormalizeRunner
   attr_reader :templates, :build_timestamp, :debug, :override_version
 
   def initialize(opts)
-    @templates = opts.templates
+    @templates = opts.template_files
     @debug = opts.debug
     @modified = []
     @build_timestamp = Time.now.gmtime.strftime("%Y%m%d%H%M%S")
   end
 
   def start
-    banner("Normalizing for templates: #{templates}")
+    banner("Normalizing for templates:")
+    templates.each { |t| puts "- #{t}" }
     time = Benchmark.measure do
-      templates.each do |template|
+      templates.each do |file|
+        dir, template = file.split("/")[0], file.split("/")[1]
+        Dir.chdir dir
         validate(template)
-        fix(template)
+        Dir.chdir("..")
       end
     end
     if !@modified.empty?
