@@ -38,7 +38,7 @@ class Options
     }
 
     templates_argv_proc = proc { |options|
-      options.templates = calculate_templates(args) unless args.empty?
+      options.template_files = calculate_templates(args) unless args.empty?
 
       options.template_files.each do |t|
         if !File.exists?("#{t}.json")
@@ -191,7 +191,7 @@ class Options
       map { |glob| result = Dir.glob(glob); result.empty? ? glob : result }.
       flatten.
       sort.
-      delete_if { |file| file =~ /\.(variables||metadata)\./ }.
+      delete_if { |file| file =~ /\.(variables||metadata)\.json/ }.
       map { |template| template.sub(/\.json$/, "") }
   end
 end

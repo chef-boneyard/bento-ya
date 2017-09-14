@@ -13,9 +13,9 @@ class ReleaseRunner
   def start
     banner("Releasing #{box}/#{version}...")
     time = Benchmark.measure do
-      box = vc_account.get_box(box)
-      version = box.get_version(version)
-      version.release
+      b = vc_account.get_box(box)
+      v = b.get_version(version)
+      v.release
     end
     banner("Release finished in #{duration(time.real)}.")
   end
