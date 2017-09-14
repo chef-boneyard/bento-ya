@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.0.1](https://github.com/cheeseplus/bento-ya/tree/v1.0.1) (2017-09-14)
+[Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v1.0.0...v1.0.1)
+
+### BUG FIXES
+
+* Fix normalize
+* Fix release
+
 ## [v1.0.0](https://github.com/cheeseplus/bento-ya/tree/v1.0.0) (2017-09-05)
 [Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v0.1.4...v1.0.0)
 
