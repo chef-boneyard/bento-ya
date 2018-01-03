@@ -1,4 +1,10 @@
 # Change Log
+## [v1.1.0](https://github.com/cheeseplus/bento-ya/tree/v1.1.0) (2018-01-02)
+[Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v1.0.1...v1.1.0)
+
+### NEW FEATURE
+
+* Support for uploading to N and N.N slugs via builds.yml 
 
 ## [v1.0.1](https://github.com/cheeseplus/bento-ya/tree/v1.0.1) (2017-09-14)
 [Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v1.0.0...v1.0.1)
