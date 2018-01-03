@@ -22,15 +22,26 @@ class UploadRunner
 
   def upload(md_file)
     md = box_metadata(md_file)
-    box_description = "a bento box for #{md['name']}"
-    box = vc_account.ensure_box(md["name"], box_description, private_box?(md["name"]))
-    version = box.ensure_version(md["version"], File.read(md_file))
+    box_desc = "a bento box for #{md['name']}"
+    box = vc_account.ensure_box(md["name"], box_desc, private_box?(md["name"]))
+    box_ver = box.ensure_version(md["version"], File.read(md_file))
+
+    if builds_yml['slugs'].values.include?(box.name)
+      slug_desc = "a bento box for #{builds_yml['slugs'].key(box.name)}"
+      slug = vc_account.ensure_box(builds_yml['slugs'].key(box.name), slug_desc, false)
+      slug_ver = slug.ensure_version(md["version"], File.read(md_file))
+    end
 
     md["providers"].each do |k, v|
-      provider = version.ensure_provider(k, nil)
-      banner("Uploading #{box.name}/#{version.version}/#{provider.name}...")
+      provider = box_ver.ensure_provider(k, nil)
+      banner("Uploading #{box.name}/#{box_ver.version}/#{provider.name}...")
       provider.upload_file("builds/#{v['file']}")
       banner("#{provider.download_url}")
+      next unless builds_yml['slugs'].values.include?(box.name)
+      slug_provider = slug_ver.ensure_provider(k, nil)
+      banner("Uploading #{slug.name}/#{slug_ver.version}/#{slug_provider.name}...")
+      slug_provider.upload_file("builds/#{v['file']}")
+      banner("#{slug_provider.download_url}")
     end
   end
 end
