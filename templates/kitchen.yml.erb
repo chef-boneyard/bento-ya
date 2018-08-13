@@ -17,10 +17,13 @@ platforms:
     provider: <%= k %>
 <% end -%>
     box: bento-<%= @boxname %>
-    box_url: file://<%= ENV['PWD'] %>/builds/<%= v['file'] %>
+    box_url: file://<%= Dir.pwd %>/builds/<%= v['file'] %>
     synced_folders:
+<% if k =~ /hyperv/ -%>
+      - [".", "/vagrant", "disabled: true"]
+<% else -%>
       - [".", "/vagrant", "disabled: <%= @share_disabled %>"]
-
+<% end -%>
 <% end -%>
 suites:
 - name: default
