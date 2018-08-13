@@ -1,4 +1,17 @@
 # Change Log
+
+## [v1.1.1](https://github.com/cheeseplus/bento-ya/tree/v1.1.1) (2018-08-13)
+[Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v1.1.0...v1.1.1)
+
+**Closed issues:**
+
+- disable synced\_folder for Hyper-V provider [\#37](https://github.com/cheeseplus/bento-ya/issues/37)
+- use full paths for `box\_url` in kitchen.yml [\#36](https://github.com/cheeseplus/bento-ya/issues/36)
+
+**Merged pull requests:**
+
+- This fixes Windows Hyper-V builders [\#39](https://github.com/cheeseplus/bento-ya/pull/39) ([cheeseplus](https://github.com/cheeseplus))
+
 ## [v1.1.0](https://github.com/cheeseplus/bento-ya/tree/v1.1.0) (2018-01-02)
 [Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v1.0.1...v1.1.0)
 
