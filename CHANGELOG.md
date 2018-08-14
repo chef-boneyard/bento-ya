@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.1.2](https://github.com/cheeseplus/bento-ya/tree/v1.1.2) (2018-08-14)
+[Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v1.1.1...v1.1.2)
+
+**Merged pull requests:**
+
+- Alter share\_disabled regex to catch all BSDs [\#41](https://github.com/cheeseplus/bento-ya/pull/41) ([cheeseplus](https://github.com/cheeseplus))
+
 ## [v1.1.1](https://github.com/cheeseplus/bento-ya/tree/v1.1.1) (2018-08-13)
 [Full Changelog](https://github.com/cheeseplus/bento-ya/compare/v1.1.0...v1.1.1)
 
