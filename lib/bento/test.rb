@@ -44,7 +44,7 @@ class TestRunner
     md = box_metadata(md_json)
     @boxname = md["name"]
     @providers = md["providers"]
-    @share_disabled = no_shared || /(freebsd|opensuse)/.match(boxname) ? true : false
+    @share_disabled = no_shared || /(bsd|opensuse)/.match(boxname) ? true : false
 
     dir = "#{File.expand_path("../../", File.dirname(__FILE__))}/templates"
     %w{.kitchen.yml bootstrap.sh}.each do |file|
