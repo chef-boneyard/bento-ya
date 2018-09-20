@@ -7,7 +7,7 @@ class BuildRunner
   include Common
   include PackerExec
 
-  attr_reader :template_files, :config, :dry_run, :debug, :only, :except, :mirror, :headed,
+  attr_reader :template_files, :config, :dry_run, :debug, :only, :except, :mirror, :headed, :single,
               :override_version, :build_timestamp, :cpus, :mem
 
   def initialize(opts)
@@ -19,6 +19,7 @@ class BuildRunner
     @except = opts.except
     @mirror = opts.mirror
     @headed = opts.headed ||= false
+    @single = opts.single ||= false
     @override_version = opts.override_version
     @build_timestamp = Time.now.gmtime.strftime("%Y%m%d%H%M%S")
     @cpus = opts.cpus
@@ -67,6 +68,7 @@ class BuildRunner
     cmd.insert(2, "-var") if mirror
     cmd.insert(2, "headless=true") unless headed
     cmd.insert(2, "-var") unless headed
+    cmd.insert(2, "-parallel=false") if single
     cmd.insert(2, "-debug") if debug
     cmd.insert(0, "echo") if dry_run
     cmd
