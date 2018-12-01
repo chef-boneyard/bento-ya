@@ -83,11 +83,11 @@ class Options
             options.debug = opt
           end
 
-          opts.on("-o BUILDS", "--only BUILDS", "Only build some Packer builds") do |opt|
+          opts.on("-o BUILDS", "--only BUILDS", "Only build some Packer builds (ex: parallels-iso,virtualbox-iso,vmware-iso)") do |opt|
             options.only = opt
           end
 
-          opts.on("-e BUILDS", "--except BUILDS", "Build all Packer builds except these") do |opt|
+          opts.on("-e BUILDS", "--except BUILDS", "Build all Packer builds except these (ex: parallels-iso,virtualbox-iso,vmware-iso)") do |opt|
             options.except = opt
           end
 
