@@ -41,7 +41,7 @@ class Options
       options.template_files = calculate_templates(args) unless args.empty?
 
       options.template_files.each do |t|
-        if !File.exists?("#{t}.json")
+        if !File.exist?("#{t}.json")
           $stderr.puts "File #{t}.json does not exist for template '#{t}'"
           exit(1)
         end
@@ -187,12 +187,12 @@ class Options
   end
 
   def self.calculate_templates(globs)
-    Array(globs).
-      map { |glob| result = Dir.glob(glob); result.empty? ? glob : result }.
-      flatten.
-      sort.
-      delete_if { |file| file =~ /\.(variables||metadata)\.json/ }.
-      map { |template| template.sub(/\.json$/, "") }
+    Array(globs)
+      .map { |glob| result = Dir.glob(glob); result.empty? ? glob : result }
+      .flatten
+      .sort
+      .delete_if { |file| file =~ /\.(variables||metadata)\.json/ }
+      .map { |template| template.sub(/\.json$/, "") }
   end
 end
 

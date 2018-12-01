@@ -64,8 +64,8 @@ class BuildMetadata
     if override_version
       override_version
     else
-      merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP").
-        rpartition(".").first.concat("#{build_timestamp}")
+      merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP")
+        .rpartition(".").first.concat("#{build_timestamp}")
     end
   end
 

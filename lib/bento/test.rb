@@ -53,7 +53,7 @@ class TestRunner
       File.open(file, "w") { |f| f.puts erb }
     end
 
-    test = Mixlib::ShellOut.new("kitchen test", :timeout => 900, live_stream: STDOUT)
+    test = Mixlib::ShellOut.new("kitchen test", timeout: 900, live_stream: STDOUT)
     test.run_command
     test.error!
   end
