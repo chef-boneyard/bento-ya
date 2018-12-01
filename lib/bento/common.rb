@@ -9,6 +9,7 @@ MEGABYTE = 1024.0 * 1024.0
 
 module Common
   def vc_account
+    raise "You must set the 'VAGRANT_CLOUD_ORG' and 'VAGRANT_CLOUD_TOKEN' tokens to interact with the Vagrant Cloud!" unless ENV["VAGRANT_CLOUD_ORG"] && ENV["VAGRANT_CLOUD_TOKEN"]
     VagrantCloud::Account.new(ENV["VAGRANT_CLOUD_ORG"], ENV["VAGRANT_CLOUD_TOKEN"])
   end
 
