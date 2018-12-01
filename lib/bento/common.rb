@@ -50,11 +50,7 @@ module Common
   end
 
   def metadata_files
-    @metadata_files ||= compute_metadata_files
-  end
-
-  def compute_metadata_files
-    `ls builds/*.json`.split("\n")
+    @metadata_files ||= Dir.glob('builds/*.json')
   end
 
   def builds_yml
