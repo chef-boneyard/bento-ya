@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.unshift File.expand_path("../lib", __FILE__)
 require "bento/version"
-require "English"
 
 Gem::Specification.new do |gem|
   gem.name          = "bento-ya"
@@ -13,10 +12,9 @@ Gem::Specification.new do |gem|
   gem.summary       = "A RubyGem for managing chef/bento builds"
   gem.homepage      = "https://github.com/cheeseplus/bento-ya"
 
-  gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  gem.files         = %w{LICENSE} + Dir.glob("{templates,bin,lib}/**/*")
   gem.bindir        = "bin"
   gem.executables   = %w{bento}
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
   gem.required_ruby_version = ">= 2.3.1"
