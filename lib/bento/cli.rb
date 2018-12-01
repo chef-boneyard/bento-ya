@@ -33,14 +33,15 @@ class Options
       COMMANDS
     end
 
-    platforms_argv_proc = proc { |options|
-      options.platforms = builds["public"] unless args.empty?
-    }
+    # @tas50: commenting this out since it's unused 11/30/2018
+    # platforms_argv_proc = proc { |opts|
+    #   opts.platforms = builds["public"] unless args.empty?
+    # }
 
-    templates_argv_proc = proc { |options|
-      options.template_files = calculate_templates(args) unless args.empty?
+    templates_argv_proc = proc { |opts|
+      opts.template_files = calculate_templates(args) unless args.empty?
 
-      options.template_files.each do |t|
+      opts.template_files.each do |t|
         if !File.exist?("#{t}.json")
           $stderr.puts "File #{t}.json does not exist for template '#{t}'"
           exit(1)
@@ -48,19 +49,19 @@ class Options
       end
     }
 
-    box_version_argv_proc = proc { |options|
-      options.box = ARGV[0]
-      options.version = ARGV[1]
+    box_version_argv_proc = proc { |opts|
+      opts.box = ARGV[0]
+      opts.version = ARGV[1]
     }
 
-    md_json_argv_proc = proc { |options|
-      options.md_json = ARGV[0]
+    md_json_argv_proc = proc { |opts|
+      opts.md_json = ARGV[0]
     }
 
     subcommand = {
       help: {
         parser: OptionParser.new {},
-        argv: proc { |options|
+        argv: proc { |opts|
           puts global
           exit(0)
         },

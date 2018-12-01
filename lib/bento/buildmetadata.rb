@@ -35,7 +35,7 @@ class BuildMetadata
   end
 
   def git_revision
-    sha = `git rev-parse HEAD`.strip
+    `git rev-parse HEAD`.strip
   end
 
   def git_clean?
