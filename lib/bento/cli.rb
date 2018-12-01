@@ -202,7 +202,7 @@ class ListRunner
   attr_reader :templates
 
   def initialize(opts)
-    @templates = opts.templates
+    @templates = opts.template_files
   end
 
   def start
