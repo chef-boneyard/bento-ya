@@ -33,7 +33,7 @@ module Common
   end
 
   def box_metadata(metadata_file)
-    metadata = Hash.new
+    metadata = {}
     file = File.read(metadata_file)
     json = JSON.parse(file)
 
@@ -42,7 +42,7 @@ module Common
     metadata["version"] = json["version"]
     metadata["box_basename"] = json["box_basename"]
     metadata["tools"] = json["tools"]
-    metadata["providers"] = Hash.new
+    metadata["providers"] = {}
     json["providers"].each do |provider|
       metadata["providers"][provider["name"]] = provider.reject { |k, _| k == "name" }
     end

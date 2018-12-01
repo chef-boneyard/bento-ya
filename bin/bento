@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-# -*- encoding: utf-8 -*-
-
 Signal.trap("INT") { exit 1 }
 
 $stdout.sync = true
@@ -12,6 +10,6 @@ require "bento/cli"
 begin
   Runner.new(Options.parse(ARGV)).start
 rescue => ex
-  $stderr.puts ">>> #{ex.message}"
-  exit(($? && $?.exitstatus) || 99)
+  warn ">>> #{ex.message}"
+  exit(($CHILD_STATUS && $CHILD_STATUS.exitstatus) || 99)
 end

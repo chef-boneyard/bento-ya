@@ -61,12 +61,8 @@ class BuildMetadata
   end
 
   def version
-    if override_version
-      override_version
-    else
-      merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP")
-        .rpartition(".").first.concat("#{build_timestamp}")
-    end
+    override_version || merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP")
+                                   .rpartition(".").first.concat(build_timestamp.to_s)
   end
 
   def packer_ver

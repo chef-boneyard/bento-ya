@@ -18,13 +18,14 @@ class NormalizeRunner
     templates.each { |t| puts "- #{t}" }
     time = Benchmark.measure do
       templates.each do |file|
-        dir, template = file.split("/")[0], file.split("/")[1]
+        dir = file.split("/")[0]
+        template = file.split("/")[1]
         Dir.chdir dir
         validate(template)
         Dir.chdir("..")
       end
     end
-    if !@modified.empty?
+    unless @modified.empty?
       info("")
       info("The following templates were modified:")
       @modified.sort.each { |template| info("  * #{template}") }
@@ -44,7 +45,8 @@ class NormalizeRunner
     banner("[#{template}] Fixing")
     original_checksum = checksum(file)
     output = `packer fix #{file}`
-    raise "[#{template}] Error fixing, exited #{$?}" if $?.exitstatus != 0
+    raise "[#{template}] Error fixing, exited #{$CHILD_STATUS}" if $CHILD_STATUS.exitstatus != 0
+
     # preserve ampersands in shell commands,
     # see: https://github.com/mitchellh/packer/issues/784
     output.gsub!("\\u0026", "&")
@@ -76,7 +78,7 @@ class NormalizeRunner
         banner("[#{template}] DEBUG: md_file(#{md_file.path}) is:")
         puts IO.read(md_file.path)
       end
-      system(*cmd) || raise( "[#{template}] Error validating, exited #{$?}")
+      system(*cmd) || raise("[#{template}] Error validating, exited #{$CHILD_STATUS}")
     end
   end
 end

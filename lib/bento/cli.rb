@@ -11,7 +11,7 @@ require "bento/test"
 require "bento/upload"
 
 class Options
-  NAME = File.basename($0).freeze
+  NAME = File.basename($PROGRAM_NAME).freeze
 
   def self.parse(args)
     options = OpenStruct.new
@@ -42,8 +42,8 @@ class Options
       opts.template_files = calculate_templates(args) unless args.empty?
 
       opts.template_files.each do |t|
-        if !File.exist?("#{t}.json")
-          $stderr.puts "File #{t}.json does not exist for template '#{t}'"
+        unless File.exist?("#{t}.json")
+          warn "File #{t}.json does not exist for template '#{t}'"
           exit(1)
         end
       end
@@ -61,7 +61,7 @@ class Options
     subcommand = {
       help: {
         parser: OptionParser.new {},
-        argv: proc { |opts|
+        argv: proc { |_opts|
           puts global
           exit(0)
         },
@@ -144,7 +144,7 @@ class Options
             options.provisioner = opt
           end
         end,
-        argv: Proc.new {},
+        argv: proc {},
       },
       upload: {
         class: UploadRunner,
