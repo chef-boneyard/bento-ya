@@ -88,7 +88,7 @@ module Common
     proprietary_os_list.any? { |p| boxname.include?(p) }
   end
 
-  def os_x?
+  def macos?
     !!(RUBY_PLATFORM =~ /darwin/)
   end
 
