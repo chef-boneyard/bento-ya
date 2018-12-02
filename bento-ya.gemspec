@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["sthomas@chef.io"]
   gem.description   = "bento-ya builds bento boxes"
   gem.summary       = "A RubyGem for managing chef/bento builds"
-  gem.homepage      = "https://github.com/cheeseplus/bento-ya"
+  gem.homepage      = "https://github.com/chef/bento-ya"
 
   gem.files         = %w{LICENSE} + Dir.glob("{templates,bin,lib}/**/*")
   gem.bindir        = "bin"

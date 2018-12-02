@@ -61,6 +61,6 @@ bento-ya aims to adhere to [Semantic Versioning 2.0.0][semver].
 
 Apache License, Version 2.0 (see [LICENSE][license])
 
-[license]: https://github.com/cheeseplus/bento-ya/blob/master/LICENSE
+[license]: https://github.com/chef/bento-ya/blob/master/LICENSE
 [semver]:  http://semver.org/
 [vagrantcloud]:   https://vagrantcloud.com/
