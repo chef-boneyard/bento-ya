@@ -107,6 +107,10 @@ class Options
             options.headed = opt
           end
 
+          opts.on("-S", "--single", "Disable parallelization of Packer builds") do |opt|
+            options.single = opt
+          end
+
           opts.on("-v VERSION", "--version VERSION", "Override the version set in the template") do |opt|
             options.override_version = opt
           end
