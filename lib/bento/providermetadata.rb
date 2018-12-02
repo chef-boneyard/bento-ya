@@ -56,7 +56,7 @@ class ProviderMetadata
   end
 
   def ver_vmware
-    if os_x?
+    if macos?
       path = File.join('/Applications/VMware\ Fusion.app/Contents/Library')
       fusion_cmd = File.join(path, "vmware-vmx -v")
       cmd = Mixlib::ShellOut.new(fusion_cmd)
@@ -70,7 +70,7 @@ class ProviderMetadata
   end
 
   def ver_parallels
-    raise "Platform is not macOS / OS X, exiting..." unless os_x?
+    raise "Platform is not macOS, exiting..." unless macos?
     cmd = Mixlib::ShellOut.new("prlctl --version")
     cmd.run_command
     cmd.stdout.split(" ")[2]

@@ -38,13 +38,14 @@ class BuildRunner
   private
 
   def build(file)
-    dir, template = file.split("/")[0], file.split("/")[1]
+    dir = file.split("/")[0]
+    template = file.split("/")[1]
     Dir.chdir dir
-    for_packer_run_with(template) do |md_file, var_file|
+    for_packer_run_with(template) do |md_file, _var_file|
       cmd = packer_build_cmd(template, md_file.path)
       banner("[#{template}] Building: '#{cmd.join(' ')}'")
       time = Benchmark.measure do
-        system(*cmd) || raise("[#{template}] Error building, exited #{$?}")
+        system(*cmd) || raise("[#{template}] Error building, exited #{$CHILD_STATUS}")
       end
       write_final_metadata(template, time.real.ceil)
       banner("[#{template}] Finished building in #{duration(time.real)}.")

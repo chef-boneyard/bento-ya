@@ -35,7 +35,7 @@ class BuildMetadata
   end
 
   def git_revision
-    sha = `git rev-parse HEAD`.strip
+    `git rev-parse HEAD`.strip
   end
 
   def git_clean?
@@ -61,12 +61,8 @@ class BuildMetadata
   end
 
   def version
-    if override_version
-      override_version
-    else
-      merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP").
-        rpartition(".").first.concat("#{build_timestamp}")
-    end
+    override_version || merged_vars.fetch("version", "#{UNKNOWN}.TIMESTAMP")
+                                   .rpartition(".").first.concat(build_timestamp.to_s)
   end
 
   def packer_ver

@@ -1,4 +1,3 @@
-
 module PackerExec
   def for_packer_run_with(template)
     Tempfile.open("#{template}-metadata.json") do |md_file|

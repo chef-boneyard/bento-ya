@@ -11,7 +11,7 @@ require "bento/test"
 require "bento/upload"
 
 class Options
-  NAME = File.basename($0).freeze
+  NAME = File.basename($PROGRAM_NAME).freeze
 
   def self.parse(args)
     options = OpenStruct.new
@@ -26,41 +26,42 @@ class Options
         list         :   list all templates in project
         normalize    :   normalize one or more templates
         test         :   test one or more builds with kitchen
-        upload       :   upload one or more builds to Atlas and S3
-        release      :   release a version of a box on Atlas
-        revoke       :   revoke a version of a box on Atlas
-        delete       :   delete a version of a box from Atlas
+        upload       :   upload one or more builds to Vagrant Cloud and S3
+        release      :   release a version of a box on Vagrant Cloud
+        revoke       :   revoke a version of a box on Vagrant Cloud
+        delete       :   delete a version of a box from Vagrant Cloud
       COMMANDS
     end
 
-    platforms_argv_proc = proc { |options|
-      options.platforms = builds["public"] unless args.empty?
-    }
+    # @tas50: commenting this out since it's unused 11/30/2018
+    # platforms_argv_proc = proc { |opts|
+    #   opts.platforms = builds["public"] unless args.empty?
+    # }
 
-    templates_argv_proc = proc { |options|
-      options.template_files = calculate_templates(args) unless args.empty?
+    templates_argv_proc = proc { |opts|
+      opts.template_files = calculate_templates(args) unless args.empty?
 
-      options.template_files.each do |t|
-        if !File.exists?("#{t}.json")
-          $stderr.puts "File #{t}.json does not exist for template '#{t}'"
+      opts.template_files.each do |t|
+        unless File.exist?("#{t}.json")
+          warn "File #{t}.json does not exist for template '#{t}'"
           exit(1)
         end
       end
     }
 
-    box_version_argv_proc = proc { |options|
-      options.box = ARGV[0]
-      options.version = ARGV[1]
+    box_version_argv_proc = proc { |opts|
+      opts.box = ARGV[0]
+      opts.version = ARGV[1]
     }
 
-    md_json_argv_proc = proc { |options|
-      options.md_json = ARGV[0]
+    md_json_argv_proc = proc { |opts|
+      opts.md_json = ARGV[0]
     }
 
     subcommand = {
       help: {
         parser: OptionParser.new {},
-        argv: proc { |options|
+        argv: proc { |_opts|
           puts global
           exit(0)
         },
@@ -82,11 +83,11 @@ class Options
             options.debug = opt
           end
 
-          opts.on("-o BUILDS", "--only BUILDS", "Only build some Packer builds") do |opt|
+          opts.on("-o BUILDS", "--only BUILDS", "Only build some Packer builds (ex: parallels-iso,virtualbox-iso,vmware-iso)") do |opt|
             options.only = opt
           end
 
-          opts.on("-e BUILDS", "--except BUILDS", "Build all Packer builds except these") do |opt|
+          opts.on("-e BUILDS", "--except BUILDS", "Build all Packer builds except these (ex: parallels-iso,virtualbox-iso,vmware-iso)") do |opt|
             options.except = opt
           end
 
@@ -143,7 +144,7 @@ class Options
             options.provisioner = opt
           end
         end,
-        argv: Proc.new {},
+        argv: proc {},
       },
       upload: {
         class: UploadRunner,
@@ -187,12 +188,12 @@ class Options
   end
 
   def self.calculate_templates(globs)
-    Array(globs).
-      map { |glob| result = Dir.glob(glob); result.empty? ? glob : result }.
-      flatten.
-      sort.
-      delete_if { |file| file =~ /\.(variables||metadata)\.json/ }.
-      map { |template| template.sub(/\.json$/, "") }
+    Array(globs)
+      .map { |glob| result = Dir.glob(glob); result.empty? ? glob : result }
+      .flatten
+      .sort
+      .delete_if { |file| file =~ /\.(variables||metadata)\.json/ }
+      .map { |template| template.sub(/\.json$/, "") }
   end
 end
 
@@ -202,7 +203,7 @@ class ListRunner
   attr_reader :templates
 
   def initialize(opts)
-    @templates = opts.templates
+    @templates = opts.template_files
   end
 
   def start

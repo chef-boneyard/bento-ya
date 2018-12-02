@@ -25,33 +25,33 @@ sure to run `bundle install`.
 
 To build multiple templates for all providers (VirtualBox, Fusion, Parallels, etc):
 
-    $ bento build debian-8.6-amd64 debian-8.6-i386
+    $ bento build debian-8.11-amd64 debian-8.11-i386
 
 To build a box for a single provider:
 
-    $ bento build --only=virtualbox-iso debian-8.6-amd64
+    $ bento build --only=virtualbox-iso debian-8.11-amd64
 
 
 *NOTE*: The following commands rely on the environmental variables
-`ATLAS_TOKEN` and `ATLAS_ORG` being correctly set.
+`VAGRANT_CLOUD_TOKEN` and `VAGRANT_CLOUD_ORG` being correctly set.
 
 #### upload
 
-To upload built boxes to [Atlas][atlas].
+To upload built boxes to [Vagrant Cloud][vagrantcloud].
 
     $ bento upload
 
 #### release
 
-    $ bento release debian-8.6 2.3.3
+    $ bento release debian-8.11 2.3.3
 
 #### revoke
 
-    $ bento revoke debian-8.6 2.3.3
+    $ bento revoke debian-8.11 2.3.3
 
 #### delete
 
-    $ bento delete debian-8.6 2.3.3
+    $ bento delete debian-8.11 2.3.3
 
 ## Versioning
 
@@ -63,4 +63,4 @@ Apache License, Version 2.0 (see [LICENSE][license])
 
 [license]: https://github.com/cheeseplus/bento-ya/blob/master/LICENSE
 [semver]:  http://semver.org/
-[atlas]:   https://atlas.hashicorp.com
+[vagrantcloud]:   https://vagrantcloud.com/

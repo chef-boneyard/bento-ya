@@ -9,6 +9,7 @@ MEGABYTE = 1024.0 * 1024.0
 
 module Common
   def vc_account
+    raise "You must set the 'VAGRANT_CLOUD_ORG' and 'VAGRANT_CLOUD_TOKEN' tokens to interact with the Vagrant Cloud!" unless ENV["VAGRANT_CLOUD_ORG"] && ENV["VAGRANT_CLOUD_TOKEN"]
     VagrantCloud::Account.new(ENV["VAGRANT_CLOUD_ORG"], ENV["VAGRANT_CLOUD_TOKEN"])
   end
 
@@ -32,7 +33,7 @@ module Common
   end
 
   def box_metadata(metadata_file)
-    metadata = Hash.new
+    metadata = {}
     file = File.read(metadata_file)
     json = JSON.parse(file)
 
@@ -41,7 +42,7 @@ module Common
     metadata["version"] = json["version"]
     metadata["box_basename"] = json["box_basename"]
     metadata["tools"] = json["tools"]
-    metadata["providers"] = Hash.new
+    metadata["providers"] = {}
     json["providers"].each do |provider|
       metadata["providers"][provider["name"]] = provider.reject { |k, _| k == "name" }
     end
@@ -49,11 +50,7 @@ module Common
   end
 
   def metadata_files
-    @metadata_files ||= compute_metadata_files
-  end
-
-  def compute_metadata_files
-    `ls builds/*.json`.split("\n")
+    @metadata_files ||= Dir.glob("builds/*.json")
   end
 
   def builds_yml
@@ -91,7 +88,7 @@ module Common
     proprietary_os_list.any? { |p| boxname.include?(p) }
   end
 
-  def os_x?
+  def macos?
     !!(RUBY_PLATFORM =~ /darwin/)
   end
 
