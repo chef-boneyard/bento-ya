@@ -1,3 +1,3 @@
 module Bento
-  VERSION = "1.1.2".freeze
+  VERSION = "1.2.0".freeze
 end

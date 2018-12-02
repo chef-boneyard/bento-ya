@@ -1,5 +1,22 @@
 # Change Log
 
+## [v1.2.0](https://github.com/chef/bento-ya/tree/v1.2.0) (2018-12-02)
+[Full Changelog](https://github.com/chef/bento-ya/compare/v1.1.2...v1.2.0)
+
+- Updated all mentions of Atlas to be Vagrant Cloud in the application and readme including the variables that need to be set to authenticate to Vagrant Cloud
+- The app will now hard fail if VAGRANT_CLOUD_ORG or VAGRANT_CLOUD_TOKEN variables aren't set so you get a friendly error message
+- Avoided nil split errors when there's no packer definition files found
+- Updated OS X -> macOS everywhere
+- Added examples to the help for --only and --except options so it's more clear what they do
+- Resolved a nil error when running bento list
+- Added a new --single option that disables parallel builds in Packer
+- Slimed the gem down by removing dot files and the readme from the gem package
+- Resolved all Chefstyle warnings
+- Transferred the repo to github.com/chef and updatd all links to point to the new location
+- Expanded Travis testing to all supported Ruby releases
+- Removed the rspec deps since we don't actually have any specs yet
+
+
 ## [v1.1.2](https://github.com/chef/bento-ya/tree/v1.1.2) (2018-08-14)
 [Full Changelog](https://github.com/chef/bento-ya/compare/v1.1.1...v1.1.2)
 
@@ -24,7 +41,7 @@
 
 ### NEW FEATURE
 
-* Support for uploading to N and N.N slugs via builds.yml 
+* Support for uploading to N and N.N slugs via builds.yml
 
 ## [v1.0.1](https://github.com/chef/bento-ya/tree/v1.0.1) (2017-09-14)
 [Full Changelog](https://github.com/chef/bento-ya/compare/v1.0.0...v1.0.1)
