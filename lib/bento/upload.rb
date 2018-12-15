@@ -24,12 +24,13 @@ class UploadRunner
     puts "Attempting to upload #{md_file}"
     md = box_metadata(md_file)
     box_desc = "a bento box for #{md['name']}"
-    box = vc_account.ensure_box(md["name"], {description: box_desc, is_private: private_box?(md["name"])})
+    box = vc_account.ensure_box(md["name"], {short_description: box_desc, is_private: private_box?(md["name"])})
+    require 'pry';binding.pry
     box_ver = box.ensure_version(md["version"], File.read(md_file))
 
     if builds_yml["slugs"].value?(box.name)
       slug_desc = "a bento box for #{builds_yml['slugs'].key(box.name)}"
-      slug = vc_account.ensure_box(builds_yml["slugs"].key(box.name), {description: slug_desc, is_private: false})
+      slug = vc_account.ensure_box(builds_yml["slugs"].key(box.name), {short_description: slug_desc, is_private: false})
       slug_ver = slug.ensure_version(md["version"], File.read(md_file))
     end
 
