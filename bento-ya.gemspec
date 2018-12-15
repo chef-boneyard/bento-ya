@@ -19,5 +19,5 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = ">= 2.3.1"
 
   gem.add_dependency "mixlib-shellout", ">= 2.3.2"
-  gem.add_dependency "vagrant_cloud", "~> 1.0"
+  gem.add_dependency "vagrant_cloud", "~> 2.0"
 end
