@@ -25,7 +25,6 @@ class UploadRunner
     md = box_metadata(md_file)
     box_desc = "a bento box for #{md['name']}"
     box = vc_account.ensure_box(md["name"], {short_description: box_desc, is_private: private_box?(md["name"])})
-    require 'pry';binding.pry
     box_ver = box.ensure_version(md["version"], File.read(md_file))
 
     if builds_yml["slugs"].value?(box.name)
