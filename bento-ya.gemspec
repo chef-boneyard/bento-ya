@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.version       = Bento::VERSION
   gem.license       = "Apache-2.0"
   gem.authors       = ["Seth Thomas"]
-  gem.email         = ["sthomas@chef.io"]
+  gem.email         = ["seth.g.thomas@gmail.com"]
   gem.description   = "bento-ya builds bento boxes"
   gem.summary       = "A RubyGem for managing chef/bento builds"
   gem.homepage      = "https://github.com/chef/bento-ya"
